@@ -3,6 +3,7 @@ import datetime
 import werkzeug.utils
 import simplejson
 
+import odoo
 from odoo import api, SUPERUSER_ID
 from odoo import http
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
@@ -34,7 +35,12 @@ class SaasServer(http.Controller):
         _logger.info('new_database post: %s', post)
         state = simplejson.loads(post.get('state'))
         owner_user = state.get('owner_user')
+
         new_db = state.get('d')
+        dbfilter = odoo.tools.config['dbfilter']
+        if dbfilter and dbfilter == '^%d$':
+            new_db = new_db.partition('.')[0]
+
         host = state.get('h')
         public_url = state.get('public_url')
         trial = state.get('t')

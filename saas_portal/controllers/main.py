@@ -81,6 +81,7 @@ class SaasPortal(http.Controller):
     def get_full_dbname(self, dbname):
         if not dbname:
             return None
+        # TODO: db fileter should be analized
         full_dbname = '%s.%s' % (dbname, self.get_config_parameter('base_saas_domain'))
         return full_dbname.replace('www.', '')
 
